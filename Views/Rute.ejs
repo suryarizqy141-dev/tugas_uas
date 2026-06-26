@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rute Perjalanan - DT TRAVEL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --accent-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            --premium-border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: #0f172a;
+        }
+
+        .custom-navbar {
+            background-color: #ffffff;
+            border-bottom: var(--premium-border);
+        }
+        .nav-link {
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            color: #475569 !important;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+
+        /* Route Card */
+        .rute-card {
+            border: var(--premium-border);
+            border-radius: 20px;
+            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--card-shadow);
+        }
+        .rute-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        .route-badge {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .route-connector {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+        }
+
+        .route-connector::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 2px;
+            border-top: 2px dashed #e2e8f0;
+            z-index: 1;
+        }
+
+        .route-connector i {
+            background: #ffffff;
+            padding: 0 8px;
+            z-index: 2;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .btn-booking {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.75rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-booking:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar sticky-top py-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-extrabold text-dark tracking-wider" href="/" style="font-size: 1.4rem;">DT TRAVEL</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dtNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="dtNav">
+                <ul class="navbar-nav ms-auto fw-bold text-uppercase gap-2 align-items-center">
+                    <li class="nav-item"><a class="nav-link px-3" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/layanan">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 active text-primary" href="/rute">Rute</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/armada">Armada</a></li>
+                    <li class="nav-item"><a class="btn btn-primary btn-sm px-4 text-white shadow-sm ms-2 rounded-3 py-2" href="/pemesanan">Pesan Sekarang</a></li>
+                    <li class="nav-item"><a class="btn btn-outline-secondary btn-sm px-3 ms-1 rounded-3 py-2" href="/login">Admin Portal</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="container my-5 py-4">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase tracking-widest small">Popular Routes</span>
+            <h2 class="fw-extrabold text-dark mt-1">JELAJAHI RUTE POPULER</h2>
+            <p class="text-muted small">Pilihan jadwal perjalanan terbaik antar kota besar dengan tarif kompetitif.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <% if (dataRute.length === 0) { %>
+                <div class="col-12 text-center text-muted py-5">
+                    <div class="fs-2 mb-2"><i class="bi bi-geo-alt-fill text-muted"></i></div>
+                    <p class="small fw-semibold">Tidak ada rute perjalanan aktif saat ini.</p>
+                </div>
+            <% } else { %>
+                <% dataRute.forEach(r => { %>
+                    <div class="col-md-4">
+                        <div class="card h-100 rute-card p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <span class="route-badge"><i class="bi bi-shield-check me-1"></i> Jadwal Aktif</span>
+                                <h5 class="fw-extrabold text-primary mb-0" style="font-size: 1.25rem;">
+                                    Rp <%= Number(r.harga).toLocaleString('id-ID') %>
+                                </h5>
+                            </div>
+                            
+                            <!-- Route Journey -->
+                            <div class="row align-items-center mb-4 text-center">
+                                <div class="col-5">
+                                    <span class="text-muted d-block small mb-1">ASAL</span>
+                                    <h6 class="fw-extrabold text-dark mb-0 fs-5"><%= r.asal %></h6>
+                                </div>
+                                <div class="col-2 px-0">
+                                    <div class="route-connector">
+                                        <i class="bi bi-arrow-right"></i>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <span class="text-muted d-block small mb-1">TUJUAN</span>
+                                    <h6 class="fw-extrabold text-dark mb-0 fs-5"><%= r.tujuan %></h6>
+                                </div>
+                            </div>
+
+                            <hr class="opacity-10 mb-4 mt-0">
+
+                            <!-- CTA Button -->
+                            <div>
+                                <a href="/pemesanan" class="btn btn-booking text-center d-block text-decoration-none">
+                                    <i class="bi bi-ticket-perforated-fill me-1"></i> Pesan Kursi Sekarang
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-white pt-5 pb-4 mt-5">
+        <div class="container text-center">
+            <p class="small text-white-50 mb-0">&copy; 2026 DT TRAVEL. Premium Service All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

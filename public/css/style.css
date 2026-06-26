@@ -1,0 +1,56 @@
+:root {
+    --primary-color: #0f172a; /* Slate 900 */
+    --accent-color: #2563eb;  /* Blue 600 */
+    --bg-light: #f8fafc;      /* Slate 50 */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: #334155;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200') no-repeat center center/cover;
+    color: white;
+    padding: 100px 0;
+}
+
+.section-title {
+    font-weight: 700;
+    color: var(--primary-color);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+.promo-banner {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 15px;
+}
