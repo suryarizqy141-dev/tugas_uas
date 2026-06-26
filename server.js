@@ -1,7 +1,21 @@
 const express = require('express');
 const session = require('express-session');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
+const db = mysql.createConnection(process.env.MYSQL_URL || {
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'nama_database_lu'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.log('Gagal koneksi ke database MySQL:', err.message);
+    } else {
+        console.log('Koneksi database berhasil!');
+    }
+});
 const path = require('path');
 
 const app = express();
