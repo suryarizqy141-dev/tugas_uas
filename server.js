@@ -2,20 +2,6 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
-const db = mysql.createConnection(process.env.MYSQL_URL || {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'nama_database_lu'
-});
-
-db.connect((err) => {
-    if (err) {
-        console.log('Gagal koneksi ke database MySQL:', err.message);
-    } else {
-        console.log('Koneksi database berhasil!');
-    }
-});
 const path = require('path');
 
 const app = express();
@@ -30,14 +16,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(session({
-    secret: 'dt_travel_secret_key',
+    secret: process.env.SESSION_SECRET || 'dt_travel_secret_key',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 3600000 } // 1 Jam
 }));
 
-// Koneksi Database MySQL Pooling
-const pool = mysql.createPool({
+// =========================================================================
+// KONEKSI DATABASE MYSQL (Pool - lebih bagus untuk production)
+// =========================================================================
+const pool = mysql.createPool(process.env.MYSQL_URL || {
     host: 'localhost',
     user: 'root',
     password: '',
@@ -277,28 +265,13 @@ app.get('/logout', (req, res) => {
 });
 
 // =========================================================================
-// RUN SERVER DENGAN DETEKSI PORT OTOMATIS (ANTI-BENZROK)
+// RUN SERVER DENGAN PORT DARI ENVIRONMENT VARIABLE
 // =========================================================================
-const START_PORT = 3100;
+const PORT = process.env.PORT || 3100;
 
-function startServer(port) {
-    const server = app.listen(port, () => {
-        console.log(`==================================================================`);
-        console.log(`SISTEM MEWAH MULTI-HALAMAN SUDAH AKTIF`);
-        console.log(`Silakan akses di browser Anda: http://localhost:${port}`);
-        console.log(`==================================================================`);
-    });
-
-    // Jika port yang dituju ternyata sibuk, otomatis naik ke port berikutnya
-    server.on('error', (err) => {
-        if (err.code === 'EADDRINUSE') {
-            console.log(`⚠️ Port ${port} sedang digunakan. Mencoba port berikutnya: ${port + 1}...`);
-            startServer(port + 1);
-        } else {
-            console.error('Terjadi error pada server:', err.message);
-        }
-    });
-}
-
-// Menjalankan inisialisasi server pertama kali
-startServer(START_PORT);
+app.listen(PORT, () => {
+    console.log(`==================================================================`);
+    console.log(`SISTEM MEWAH MULTI-HALAMAN SUDAH AKTIF`);
+    console.log(`Server berjalan di port ${PORT}`);
+    console.log(`==================================================================`);
+});
